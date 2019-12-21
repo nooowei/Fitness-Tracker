@@ -2,17 +2,23 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+// axios is used to send HTTP request
 
 export default class CreateExercise extends Component {
+  // in JS, we always need to call super() when defining the constructor of a subclass
   constructor(props) {
     super(props);
 
+    // these lines are binding the keyword "this" to these methods
+    // so "this" will refer to the right thing
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
+    // state is how we create variables in React, when we update state, page will update with new values.
+    // coorespond to mongoDB property
     this.state = {
       username: '',
       description: '',
@@ -22,11 +28,15 @@ export default class CreateExercise extends Component {
     }
   }
 
+  // this is a React lifecycle method, will automatically be called by React
+  // called right before anything is displayed on the page.
   componentDidMount() {
     axios.get('http://localhost:5000/users/')
       .then(response => {
+        //checking there is at least 1 user in database
         if (response.data.length > 0) {
           this.setState({
+            // data will be an array, for each user we will return their username
             users: response.data.map(user => user.username),
             username: response.data[0].username
           })
@@ -38,6 +48,8 @@ export default class CreateExercise extends Component {
 
   }
 
+  // Event handler function that calls on "setState()" method to change the state
+  // functions are called from the page,  e.target is the text box, value is the innerHTML
   onChangeUsername(e) {
     this.setState({
       username: e.target.value
@@ -63,8 +75,12 @@ export default class CreateExercise extends Component {
   }
 
   onSubmit(e) {
+    // this method will prevent the default submition behaviour from HTML
+    // and will use the method we defined underneath instead
     e.preventDefault();
 
+    // we can use the conventional way to create variables in methods
+    // if the variable will only be used within the method
     const exercise = {
       username: this.state.username,
       description: this.state.description,
@@ -77,6 +93,7 @@ export default class CreateExercise extends Component {
     axios.post('http://localhost:5000/exercises/add', exercise)
       .then(res => console.log(res.data));
 
+    // take the user back to homepage ("/").
     window.location = '/';
   }
 
@@ -84,6 +101,7 @@ export default class CreateExercise extends Component {
     return (
     <div>
       <h3>Create New Exercise Log</h3>
+      {/* set Event handler function */}
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <label>Username: </label>

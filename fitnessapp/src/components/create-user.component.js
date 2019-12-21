@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+// axios is used to send HTTP request
 
 export default class CreateUser extends Component {
   constructor(props) {
@@ -7,6 +8,7 @@ export default class CreateUser extends Component {
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+
 
     this.state = {
       username: ''
@@ -28,9 +30,12 @@ export default class CreateUser extends Component {
 
     console.log(user);
 
+    // sending a HTTP POST request to the URL end point
+    // which is expecting a JSON object, that we put in as a second argument
     axios.post('http://localhost:5000/users/add', user)
       .then(res => console.log(res.data));
 
+    // this is used to reset the username field to blank after submission
     this.setState({
       username: ''
     })
