@@ -23,6 +23,7 @@ export default class EditExercise extends Component {
   }
 
   componentDidMount() {
+    // this.props.match.params.id gets the id directly from the URL
     axios.get('http://localhost:5000/exercises/'+this.props.match.params.id)
       .then(response => {
         this.setState({
