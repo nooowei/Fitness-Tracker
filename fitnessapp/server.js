@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -21,8 +22,21 @@ connection.once('open', () => {
 const exercisesRouter = require('./routes/exercises');
 const usersRouter = require('./routes/users');
 
+//use the routes
 app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
+
+//serve static asset if in production
+if(process.env.NODE_ENV === 'production'){
+  console.log("Production environment. Serving static asset from client/build.");
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  // server will serve up index.html in the build folder if in production
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  })
+}
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
