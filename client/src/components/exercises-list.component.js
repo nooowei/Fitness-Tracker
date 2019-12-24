@@ -28,7 +28,7 @@ export default class ExercisesList extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://weisfitnesstracker.herokuapp.com/exercises/')
+    axios.get('/exercises')
       .then(response => {
         this.setState({ exercises: response.data })
       })
