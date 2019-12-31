@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
 
 // this Exercise-component exists within the exercises-list-component
 // this is an Functional React Component, it doesn't have state, and lifecycle methods.
@@ -12,7 +14,9 @@ const Exercise = props => (
     <td>{props.exercise.duration}</td>
     <td>{props.exercise.date.substring(0,10)}</td>
     <td>
-      <Link to={"/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a>
+      {/* <Link to={"/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a> */}
+      <Button href={"/edit/"+props.exercise._id}>Edit</Button> | <Button onClick={() => { props.deleteExercise(props.exercise._id) }}>Delete</Button>
+
     </td>
   </tr>
 )
@@ -63,9 +67,9 @@ export default class ExercisesList extends Component {
   render() {
     return (
       <div>
-        <h3>Logged Exercises</h3>
-        <table className="table">
-          <thead className="thead-light">
+        <h3>Exercise Log</h3>
+        <Table striped bordered hover variant="dark">
+          <thead>
             <tr>
               <th>Username</th>
               <th>Description</th>
@@ -77,7 +81,7 @@ export default class ExercisesList extends Component {
           <tbody>
             { this.exerciseList() }
           </tbody>
-        </table>
+        </Table>
       </div>
     )
   }

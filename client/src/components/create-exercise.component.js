@@ -100,7 +100,7 @@ export default class CreateExercise extends Component {
   render() {
     return (
     <div>
-      <h3>Create New Exercise Log</h3>
+      <h3>Create New Log</h3>
       {/* set Event handler function */}
       <form onSubmit={this.onSubmit}>
         <div className="form-group">

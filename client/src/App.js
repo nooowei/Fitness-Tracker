@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route} from "react-router-dom";
 
 //importing the components from the folder
-import Navbar from "./components/navbar.component"
+import NavbarReact from "./components/navbar.component"
 import ExercisesList from "./components/exercises-list.component";
 import EditExercise from "./components/edit-exercise.component";
 import CreateExercise from "./components/create-exercise.component";
@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <Navbar />
+        <NavbarReact />
         <br/>
         <Route path="/" exact component={ExercisesList} />
         <Route path="/edit/:id" component={EditExercise} />
