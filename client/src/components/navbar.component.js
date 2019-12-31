@@ -7,9 +7,11 @@ import { BrowserView, MobileView} from "react-device-detect";
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
 
+
 //create a class with the class name being the name of Component
 export default class NavbarReact extends Component {
 
+  
   // all Components must return something
   // <Link> here does the same thing as <a> but for react-router
   render() {
@@ -28,11 +30,14 @@ export default class NavbarReact extends Component {
           </Navbar>
         </BrowserView>
         <MobileView>
-          <DropdownButton id="dropdown-basic-button" title="Fitness Tracker">
-            <Dropdown.Item href="/">Exercises</Dropdown.Item>
-            <Dropdown.Item href="/create">Create New Log</Dropdown.Item>
-            <Dropdown.Item href="/user">Create New User</Dropdown.Item>
-          </DropdownButton>
+          <Navbar bg="dark" variant="dark">
+            <Navbar.Brand href="/">Fitness Tracker</Navbar.Brand>
+            <DropdownButton id="dropdown-basic-button" title="Menu" >
+              <Dropdown.Item href="/">Exercises</Dropdown.Item>
+              <Dropdown.Item href="/create">Create New Log</Dropdown.Item>
+              <Dropdown.Item href="/user">Create New User</Dropdown.Item>
+            </DropdownButton>
+          </Navbar>
         </MobileView>
       </React.Fragment>
     );

@@ -68,7 +68,7 @@ export default class ExercisesList extends Component {
     return (
       <div>
         <h3>Exercise Log</h3>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="dark" responsive>
           <thead>
             <tr>
               <th>Username</th>
