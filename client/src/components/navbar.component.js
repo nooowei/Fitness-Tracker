@@ -25,7 +25,7 @@ export default class NavbarReact extends Component {
               <Nav className="mr-auto">
                 <Nav.Link href="/">Exercises</Nav.Link>
                 <Nav.Link href="/create">Create New Log</Nav.Link>
-                <Nav.Link href="/users">Create New User</Nav.Link>
+                <Nav.Link href="/user">Create New User</Nav.Link>
               </Nav>
           </Navbar>
         </BrowserView>
@@ -35,7 +35,7 @@ export default class NavbarReact extends Component {
             <DropdownButton id="dropdown-basic-button" title="Menu" >
               <Dropdown.Item href="/">Exercises</Dropdown.Item>
               <Dropdown.Item href="/create">Create New Log</Dropdown.Item>
-              <Dropdown.Item href="/users">Create New User</Dropdown.Item>
+              <Dropdown.Item href="/user">Create New User</Dropdown.Item>
             </DropdownButton>
           </Navbar>
         </MobileView>
