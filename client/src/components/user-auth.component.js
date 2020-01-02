@@ -4,7 +4,7 @@ import axios from 'axios';
 // import "react-datepicker/dist/react-datepicker.css";
 // axios is used to send HTTP request
 
-export default class CreateExercise extends Component {
+export default class UserLogin extends Component {
   // in JS, we always need to call super() when defining the constructor of a subclass
   constructor(props) {
     super(props);
@@ -129,6 +129,7 @@ export default class CreateExercise extends Component {
           <input type="submit" value="Sign In" className="btn btn-primary" />
         </div>
       </form>
+      <p>Don't have an account? Click here to <a href='/user'>Register</a>.</p>
     </div>
     )
   }

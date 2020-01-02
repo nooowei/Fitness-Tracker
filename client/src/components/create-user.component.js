@@ -7,11 +7,15 @@ export default class CreateUser extends Component {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
 
     this.state = {
-      username: ''
+      username: '',
+      password: '',
+      email: ''
     }
   }
 
@@ -21,11 +25,25 @@ export default class CreateUser extends Component {
     })
   }
 
+  onChangePassword(e) {
+    this.setState({
+      password: e.target.value
+    })
+  }
+
+  onChangeEmail(e) {
+    this.setState({
+      email: e.target.value
+    })
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
     const user = {
-      username: this.state.username
+      username: this.state.username,
+      password: this.state.password,
+      email: this.state.email
     }
 
     console.log(user);
@@ -37,14 +55,18 @@ export default class CreateUser extends Component {
 
     // this is used to reset the username field to blank after submission
     this.setState({
-      username: ''
+      username: '',
+      password: '',
+      email: ''
     })
+    // // redirect after adding auth gate to dashboard
+    // window.location = '/';
   }
 
   render() {
     return (
       <div>
-        <h3>Create New User</h3>
+        <h3>Create New Account</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Username: </label>
@@ -56,9 +78,28 @@ export default class CreateUser extends Component {
                 />
           </div>
           <div className="form-group">
+            <label>Password: </label>
+            <input  type="password"
+                required
+                className="form-control"
+                value={this.state.password}
+                onChange={this.onChangePassword}
+                />
+          </div>
+          <div className="form-group">
+            <label>Email: </label>
+            <input  type="email"
+                required
+                className="form-control"
+                value={this.state.email}
+                onChange={this.onChangeEmail}
+                />
+          </div>
+          <div className="form-group">
             <input type="submit" value="Create User" className="btn btn-primary" />
           </div>
         </form>
+        <p>Already have an account? Click here to <a href='/login'>Sign In</a>.</p>
       </div>
     )
   }
