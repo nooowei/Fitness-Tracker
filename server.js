@@ -21,10 +21,13 @@ connection.once('open', () => {
 
 const exercisesRouter = require('./routes/exercises');
 const usersRouter = require('./routes/users');
+const loginRouter = require('./routes/login');
 
 //use the routes
 app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+
 
 //serve static asset if in production
 if(process.env.NODE_ENV === 'production'){
