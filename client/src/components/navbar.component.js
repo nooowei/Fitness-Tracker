@@ -26,6 +26,7 @@ export default class NavbarReact extends Component {
                 <Nav.Link href="/">Exercises</Nav.Link>
                 <Nav.Link href="/create">Create New Log</Nav.Link>
                 <Nav.Link href="/user">Create New User</Nav.Link>
+                <Nav.Link href="/login">Sign In</Nav.Link>
               </Nav>
           </Navbar>
         </BrowserView>
@@ -36,6 +37,7 @@ export default class NavbarReact extends Component {
               <Dropdown.Item href="/">Exercises</Dropdown.Item>
               <Dropdown.Item href="/create">Create New Log</Dropdown.Item>
               <Dropdown.Item href="/user">Create New User</Dropdown.Item>
+              <Dropdown.Item href="/login">Sign In</Dropdown.Item>
             </DropdownButton>
           </Navbar>
         </MobileView>
