@@ -93,7 +93,11 @@ export default class UserLogin extends Component {
 
     //send POST request to backend when submit
     axios.post('/login', user)
-      .then(res => console.log(res.data));
+      .then(function(res){
+        // console.log("Axios response res object from POST /login route: ");
+        console.log(res.data);
+
+    });
 
     // // take the user back to homepage ("/").
     // window.location = '/';
