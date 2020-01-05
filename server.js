@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
+const config = require('config');
 
 require('dotenv').config();
 
@@ -29,7 +30,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-const uri = process.env.MONGOLAB_URI;
+// const uri = process.env.MONGOLAB_URI;
+const uri = config.get('MONGOLAB_URI');
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
 );
 const connection = mongoose.connection;

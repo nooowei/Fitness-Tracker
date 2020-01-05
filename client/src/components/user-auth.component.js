@@ -11,7 +11,7 @@ export default class UserLogin extends Component {
 
     // these lines are binding the keyword "this" to these methods
     // so "this" will refer to the right thing
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     // this.onChangeDuration = this.onChangeDuration.bind(this);
     // this.onChangeDate = this.onChangeDate.bind(this);
@@ -20,11 +20,8 @@ export default class UserLogin extends Component {
     // state is how we create variables in React, when we update state, page will update with new values.
     // coorespond to mongoDB property
     this.state = {
-      username: '',
+      email: '',
       password: ''
-    //   duration: 0,
-    //   date: new Date(),
-    //   users: []
     }
   }
 
@@ -51,9 +48,9 @@ export default class UserLogin extends Component {
 
   // Event handler function that calls on "setState()" method to change the state
   // functions are called from the page,  e.target is the text box, value is the innerHTML
-  onChangeUsername(e) {
+  onChangeEmail(e) {
     this.setState({
-      username: e.target.value
+      email: e.target.value
     })
   }
 
@@ -83,7 +80,7 @@ export default class UserLogin extends Component {
     // we can use the conventional way to create variables in methods
     // if the variable will only be used within the method
     const user = {
-      username: this.state.username,
+      email: this.state.email,
       password: this.state.password
     //   duration: this.state.duration,
     //   date: this.state.date
@@ -110,12 +107,12 @@ export default class UserLogin extends Component {
       {/* set Event handler function */}
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label>Username: </label>
-          <input type="text"
+          <label>Email: </label>
+          <input type="email"
               required
               className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}
+              value={this.state.email}
+              onChange={this.onChangeEmail}
               
             />
         </div>

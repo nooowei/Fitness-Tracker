@@ -1,4 +1,6 @@
+const express = require('express');
 const router = require('express').Router();
+const auth = require('../middleware/auth');
 let Exercise = require('../models/exercise.model');
 
 router.route('/').get((req, res) => {
@@ -7,7 +9,8 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+// to protect a route, all we need to do is to add the authentication function as a 2nd parameter
+router.post('/add', auth, (req, res) => {
   const username = req.body.username;
   const description = req.body.description;
   const duration = Number(req.body.duration);

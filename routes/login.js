@@ -1,43 +1,55 @@
 const express = require('express');
 const router = require('express').Router();
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 let User = require('../models/user.model');
 
-// // dont need a get / method since we don't use the component did mount in front end
-// router.route('/').get((req, res) => {
-//   User.find()
-//     .then(users => res.json(users))
-//     .catch(err => res.status(400).json('Error: ' + err));
-// });
 
 router.route('/').post((req, res) => {
-    const {username, password} = req.body;
-    //   console.log(req.body);
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-      })(req, res);
+    const {email, password} = req.body;
+    // console.log(req.body);
 
-    // User.findOne({username: username})
-    //     .then(function(doc){
-    //         if(!doc){
-    //             console.log("user does not exist.");
-    //             res.msg = "user does not exist";
-    //             res.redirect('/login');
-    //         }
-    //         console.log("user profile is ");
-    //         console.log(doc);
-    //         if(doc.password == password){
-    //             //change this later
-    //             res.msg = "Successfully logged in";
-    //             res.redirect('/');
-    //         }
-    //     })
-    //     .catch(function(err){
-    //         console.log(err);
-    //     });
+    // check if any fields are missing
+    if (!email || !password) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    //check if user has already registered with this email
+  User.findOne({email})
+  .then(user => {
+    if(!user){
+      res.status(400).json({msg: "User doesn't exist."});
+    }
+
+    //use bcrypt to compare password from the DB
+    bcrypt.compare(password, user.password)
+        .then(isMatch => {
+            if(!isMatch){
+                return res.status(400).json({msg: 'Invalid Password.'});
+            }
+            // sending JWT again 
+            jwt.sign(
+                {id: user.id},
+                config.get('jwtSecret'),
+                { expiresIn: 3600},
+                (err, token) => {
+                  if(err) throw err;
+                  res.json({
+                    token: token,
+                    user:{
+                      id: user.id,
+                      username: user.username,
+                      email: user.email
+                    }
+                  });
+                }
+              )
+    })
+    
+  })
+
 });
-
 
 module.exports = router;
