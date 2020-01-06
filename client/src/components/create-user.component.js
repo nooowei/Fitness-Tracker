@@ -15,7 +15,8 @@ export default class CreateUser extends Component {
     this.state = {
       username: '',
       password: '',
-      email: ''
+      email: '',
+      msg: ''
     }
   }
 
@@ -47,18 +48,33 @@ export default class CreateUser extends Component {
     }
 
     console.log(user);
+    //reference for this to work in axios
+    var self = this;
 
     // sending a HTTP POST request to the URL end point
     // which is expecting a JSON object, that we put in as a second argument
     axios.post('/users/add', user)
-      .then(res => console.log(res.data));
+      .then(function(res){
+        if(typeof(res.data.msg) === 'undefined'){
+          self.setState({
+              username: '',
+              password: '',
+              email: '',
+              msg: ''
+            });
 
-    // this is used to reset the username field to blank after submission
-    this.setState({
-      username: '',
-      password: '',
-      email: ''
-    })
+          window.location = '/';
+        }
+        self.setState({msg: res.data.msg});
+      });
+
+    // // this is used to reset the username field to blank after submission
+    // this.setState({
+    //   username: '',
+    //   password: '',
+    //   email: ''
+    // })
+
     // // redirect after adding auth gate to dashboard
     // window.location = '/';
   }
@@ -96,6 +112,9 @@ export default class CreateUser extends Component {
                 />
           </div>
           <div className="form-group">
+            <div className="alert alert-light" role="alert">
+              {this.state.msg}
+            </div>
             <input type="submit" value="Create User" className="btn btn-primary" />
           </div>
         </form>

@@ -16,18 +16,26 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const {username, password, email} = req.body;
-  // console.log(req.body);
 
-  // check if any fields are missing
-  if (!username || !password || !email) {
-    return res.status(400).json({ msg: 'Please enter all fields' });
-  }
+  // // propbably redundent since front end already checks this
+  // // check if any fields are missing
+  // if (!username || !password || !email) {
+  //   return res.json({ msg: 'Please enter all fields' });
+  // }
+
+  //check if user has already registered with this email
+  User.findOne({username})
+    .then(user => {
+      if(user){
+        res.json({msg: "Username already taken."});
+      }
+    });
 
   //check if user has already registered with this email
   User.findOne({email})
     .then(user => {
       if(user){
-        res.status(400).json({msg: "User already registered."});
+        res.json({msg: "Email already registered."});
       }
 
       const newUser = new User({username, password, email});

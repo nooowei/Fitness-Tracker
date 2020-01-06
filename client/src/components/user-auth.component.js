@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import  { Redirect } from 'react-router-dom'
 import axios from 'axios';
 // import DatePicker from 'react-datepicker';
 // import "react-datepicker/dist/react-datepicker.css";
@@ -13,15 +14,16 @@ export default class UserLogin extends Component {
     // so "this" will refer to the right thing
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-    // this.onChangeDuration = this.onChangeDuration.bind(this);
-    // this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
 
     // state is how we create variables in React, when we update state, page will update with new values.
     // coorespond to mongoDB property
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      msg: '',
+      redirect: false
     }
   }
 
@@ -88,16 +90,41 @@ export default class UserLogin extends Component {
 
     console.log(user);
 
+    //this is important for the setState() method to work in axios
+    var self = this;
+
     //send POST request to backend when submit
     axios.post('/login', user)
       .then(function(res){
         // console.log("Axios response res object from POST /login route: ");
-        console.log(res.data);
-
+        // console.log(res.data.msg);  //working
+        if(typeof(res.data.msg) === 'undefined'){
+          self.setState({
+            email: '',
+            password: '',
+            msg: '',
+            redirect: true
+          });
+          // console.log("got to this point");
+          
+          
+        }
+        self.setState({msg: res.data.msg});
+        // //if log in successful, redirect to dashboard
+        // return <Redirect to='/create'/>
     });
 
     // // take the user back to homepage ("/").
     // window.location = '/';
+  }
+
+  //function to check if page will redirect
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      // this.setState({redirect: false});
+      console.log("this.state.redirect is " + this.state.redirect);
+      return <Redirect to='/create' />
+    }
   }
 
   render() {
@@ -127,7 +154,12 @@ export default class UserLogin extends Component {
         </div>
 
         <div className="form-group">
+          {/* <p>{this.state.msg}</p> */}
+          <div className="alert alert-light" role="alert">
+            {this.state.msg}
+          </div>
           <input type="submit" value="Sign In" className="btn btn-primary" />
+          {this.renderRedirect()}
         </div>
       </form>
       <p>Don't have an account? Click here to <a href='/user'>Register</a>.</p>
