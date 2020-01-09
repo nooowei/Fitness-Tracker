@@ -84,6 +84,7 @@ router.route('/add').post((req, res) => {
 
 // verify user from token
 router.get('/user', auth, (req, res) => {
+  console.log('got to /users/user');
   User.findById(req.user.id).select('-password').then(user => res.json(user));
 })
 

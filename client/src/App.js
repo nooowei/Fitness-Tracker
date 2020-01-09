@@ -9,6 +9,7 @@ import EditExercise from "./components/edit-exercise.component";
 import CreateExercise from "./components/create-exercise.component";
 import CreateUser from "./components/create-user.component";
 import UserAuth from "./components/user-auth.component";
+import Dashboard from "./components/dashboard.component";
 
 // using Router to determind which component to load into the div
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/create" component={CreateExercise} />
         <Route path="/user" component={CreateUser} />
         <Route path="/login" component={UserAuth} />
+        <Route path="/dashboard" component={Dashboard} />
       </div>
     </Router>
   );
