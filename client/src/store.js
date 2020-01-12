@@ -14,11 +14,11 @@ const middleware = [thunk];
 // 1st param is a reducer
 // 2nd param is the preloadedState - optional
 // 3rd param is necessary, just copy and paste the line starting with window
-// const store = createStore(rootReducer, initialState, compose(
-//     applyMiddleware(...middleware),
-//     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// ));
-const store = createStore(rootReducer, initialState);
+const store = createStore(rootReducer, initialState, compose(
+    applyMiddleware(...middleware),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+));
+// const store = createStore(rootReducer, initialState);
 
 // this is it for the file, everything is setup here.
 export default store;

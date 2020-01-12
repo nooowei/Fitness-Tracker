@@ -14,8 +14,13 @@ export const userRegister = user => ({
 })
 
 export const loadUsers = users => ({
-  type: 'LOAD',
+  type: 'LOAD_USERS',
   users
+})
+
+export const loadLogs = logs => ({
+  type: 'LOAD_LOGS',
+  logs
 })
 
 export const createLog = log => ({

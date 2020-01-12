@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Table from 'react-bootstrap/Table'
-import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+
+import {loadUsers} from '../actions/userAction';
 
 // this Exercise-component exists within the exercises-list-component
 // this is an Functional React Component, it doesn't have state, and lifecycle methods.
@@ -24,7 +26,7 @@ import Button from 'react-bootstrap/Button'
   }
 
 // this is a class component
-export default class ExercisesList extends Component {
+class ExercisesList extends Component {
   constructor(props) {
     super(props);
 
@@ -88,3 +90,27 @@ export default class ExercisesList extends Component {
     )
   }
 }
+
+// the "state" argument being passed in is the ENTIRE Redux Store State
+// passing global state.users to this class
+// to be used as this.props.users in ExerciseList class
+// ownProps is optional, if we want to pass this component's prop to the state
+const mapStateToProps = (state, ownProps) => (
+  //this returns an object containing data needed by this connected component
+  // each field in this object will become a prop of this connected component
+  return({
+    users: state.usersArr
+  })
+)
+
+//give this class access to actions
+// props
+const mapDispatchToProps = dispatch => ({
+  loadUsers: users => dispatch(loadUsers(users))
+})
+
+// mapDispatchToProps can be replaced by imported actions
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ExercisesList)
