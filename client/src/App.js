@@ -17,7 +17,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 // using Router to determind which component to load into the div
-// the Provider Tag allows us to share and access state from components, 
+// the Provider Tag allows us to share and access state from components,
 function App() {
   return (
     <Provider store={store}>

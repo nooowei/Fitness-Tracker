@@ -23,8 +23,8 @@ export default class UserLogin extends Component {
     this.state = {
       email: '',
       password: '',
-      msg: '',
-      redirect: false
+      msg: ''
+      // redirect: false
     }
   }
 
@@ -63,18 +63,6 @@ export default class UserLogin extends Component {
     })
   }
 
-//   onChangeDuration(e) {
-//     this.setState({
-//       duration: e.target.value
-//     })
-//   }
-
-//   onChangeDate(date) {
-//     this.setState({
-//       date: date
-//     })
-//   }
-
   onSubmit(e) {
     // this method will prevent the default submition behaviour from HTML
     // and will use the method we defined underneath instead
@@ -99,19 +87,19 @@ export default class UserLogin extends Component {
       .then(function(res){
         // console.log("Axios response res object from POST /login route: ");
         // console.log(res.data.msg);  //working
-        // if there isn't a error, change the redirect state to true, and redirect user. 
+        // if there isn't a error, change the redirect state to true, and redirect user.
         if(typeof(res.data.msg) === 'undefined'){
           self.setState({
             email: '',
             password: '',
-            msg: '',
-            redirect: true
+            msg: ''
+            // redirect: true
           });
           // console.log("got to this point");
           window.location = '/dashboard';
           // return <Dashboard userId={res.data.user.id} />
 
-          
+
         }
         self.setState({msg: res.data.msg});
         // console.log('this is the user from post /login');
@@ -120,8 +108,6 @@ export default class UserLogin extends Component {
         // return <Redirect to='/create'/>
     });
 
-    // // take the user back to homepage ("/").
-    // window.location = '/';
   }
 
   // // replaced with window.location for now
@@ -148,7 +134,7 @@ export default class UserLogin extends Component {
               className="form-control"
               value={this.state.email}
               onChange={this.onChangeEmail}
-              
+
             />
         </div>
         <div className="form-group">
