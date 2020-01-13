@@ -6,7 +6,11 @@ import Dashboard from './dashboard.component';
 // import "react-datepicker/dist/react-datepicker.css";
 // axios is used to send HTTP request
 
-export default class UserLogin extends Component {
+import { connect } from 'react-redux'
+
+import {userSignIn} from '../actions/userAction';
+
+class UserLogin extends Component {
   // in JS, we always need to call super() when defining the constructor of a subclass
   constructor(props) {
     super(props);
@@ -24,30 +28,8 @@ export default class UserLogin extends Component {
       email: '',
       password: '',
       msg: ''
-      // redirect: false
     }
   }
-
-  // this is a React lifecycle method, will automatically be called by React
-  // called right before anything is displayed on the page.
-  // probably don't need it since we dont need to load drowdown in this page
-//   componentDidMount() {
-//     axios.get('/users')
-//       .then(response => {
-//         //checking there is at least 1 user in database
-//         if (response.data.length > 0) {
-//           this.setState({
-//             // data will be an array, for each user we will return their username
-//             users: response.data.map(user => user.username),
-//             username: response.data[0].username
-//           })
-//         }
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       })
-
-//   }
 
   // Event handler function that calls on "setState()" method to change the state
   // functions are called from the page,  e.target is the text box, value is the innerHTML
@@ -73,8 +55,6 @@ export default class UserLogin extends Component {
     const user = {
       email: this.state.email,
       password: this.state.password
-    //   duration: this.state.duration,
-    //   date: this.state.date
     }
 
     console.log(user);
@@ -88,20 +68,40 @@ export default class UserLogin extends Component {
         // console.log("Axios response res object from POST /login route: ");
         // console.log(res.data.msg);  //working
         // if there isn't a error, change the redirect state to true, and redirect user.
+        // console.log("user-auth-comp, line 95, res.data.user");
+        // console.log(res.data.user);
         if(typeof(res.data.msg) === 'undefined'){
-          self.setState({
-            email: '',
-            password: '',
-            msg: ''
-            // redirect: true
-          });
-          // console.log("got to this point");
-          window.location = '/dashboard';
-          // return <Dashboard userId={res.data.user.id} />
 
+          //NOTE: we will dispatch the SIGN_IN action here
+          const user = {
+            token: res.data.token,
+            id: res.data.user.id,
+            username: res.data.user.username,
+            email: res.data.user.email
+          }
+
+          // console.log("user-auth-comp, line 107, user-param is: ");
+          // console.log(user);
+
+          // dispatch the SIGN_IN action
+          self.props.userSignIn(user);
+
+
+          // // clear the form
+          // self.setState({
+          //   email: '',
+          //   password: '',
+          //   msg: ''
+          //   // redirect: true
+          // });
+
+          self.props.history.push('/dashboard');
+          // window.location = '/dashboard';
 
         }
-        self.setState({msg: res.data.msg});
+        else{
+         self.setState({msg: res.data.msg});
+        }
         // console.log('this is the user from post /login');
         // console.log(res.data.user.id);
         // //if log in successful, redirect to dashboard
@@ -109,17 +109,6 @@ export default class UserLogin extends Component {
     });
 
   }
-
-  // // replaced with window.location for now
-  // //function to check if page will redirect
-  // renderRedirect = () => {
-  //   if (this.state.redirect) {
-  //     // this.setState({redirect: false});
-  //     // console.log("this.state.redirect is " )
-  //     // console.log(this.state.redirect);
-  //     return <Redirect to='/dashboard' />
-  //   }
-  // }
 
   render() {
     return (
@@ -148,7 +137,6 @@ export default class UserLogin extends Component {
         </div>
 
         <div className="form-group">
-          {/* <p>{this.state.msg}</p> */}
           <div className="alert alert-light" role="alert">
             {this.state.msg}
           </div>
@@ -161,3 +149,21 @@ export default class UserLogin extends Component {
     )
   }
 }
+
+
+const mapStateToProps = (state) => (
+  //this returns an object containing data needed by this connected component
+  // each field in this object will become a prop of this connected component
+    {
+      user: state.user
+    }
+)
+
+const mapDispatchToProps = dispatch => ({
+  userSignIn: user => dispatch(userSignIn(user))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserLogin)

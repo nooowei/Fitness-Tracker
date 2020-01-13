@@ -9,7 +9,7 @@ export const userSignOut = user => ({
 })
 
 export const userRegister = user => ({
-  type: 'SIGN_IN',
+  type: 'REGISTER',
   user
 })
 

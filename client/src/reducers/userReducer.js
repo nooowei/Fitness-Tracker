@@ -1,8 +1,8 @@
 const initialStatus ={
+  token:"",
+  id: "",
   username: '',
-  password: '',
-  email: '',
-  msg: ''
+  email: ''
 }
 
 // the action.id here is set by the actions.js
@@ -10,18 +10,18 @@ const user = (state = initialStatus, action) => {
   switch (action.type) {
     case "SIGN_IN":
       return {
+        token: action.user.token,
+        id: action.user.id,
         username: action.user.username,
-        password: action.user.password,
-        email: action.user.email,
-        msg: ''
+        email: action.user.email
       };
 
     case "REGISTER":
       return {
+        token: action.user.token,
+        id: action.user.id,
         username: action.user.username,
-        password: action.user.password,
-        email: action.user.email,
-        msg: ''
+        email: action.user.email
       };
       
     case "SIGN_OUT":
