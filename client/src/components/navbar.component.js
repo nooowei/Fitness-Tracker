@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; //used for loding components
-// import { Link } from 'react-router-dom';  //linking different routes
+import { Link } from 'react-router-dom';  //linking different routes
 import Navbar from 'react-bootstrap/Navbar'; 
 import Nav from 'react-bootstrap/Nav'; 
 // import Image from 'react-bootstrap/Image'
@@ -10,6 +10,15 @@ import Dropdown from 'react-bootstrap/Dropdown'
 
 //create a class with the class name being the name of Component
 export default class NavbarReact extends Component {
+  // constructor(props){
+  //   super(props);
+
+  // this.redirectHome = this.redirectHome.bind(this);
+  // }
+
+  // redirectHome(e){
+  //   this.props.history.push('/')
+  // }
 
   
   // all Components must return something
@@ -23,10 +32,10 @@ export default class NavbarReact extends Component {
                 Fitness Tracker
               </Navbar.Brand>
               <Nav className="mr-auto">
-                <Nav.Link href="/">Exercises</Nav.Link>
-                <Nav.Link href="/create">Create New Log</Nav.Link>
-                {/* <Nav.Link href="/user">Create New User</Nav.Link> */}
-                <Nav.Link href="/login">Sign In</Nav.Link>
+                <Link class="nav-link" to="/">View All</Link>
+                {/* <Nav.Link onClick={() => this.redirectHome()}>Exercises</Nav.Link> */}
+                <Link class="nav-link" to="/create">Create New Log</Link>
+                <Link class="nav-link" to="/login">Sign In</Link>
               </Nav>
           </Navbar>
         </BrowserView>
