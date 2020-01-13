@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 // axios is used to send HTTP request
 
-export default class CreateUser extends Component {
+import { connect } from 'react-redux'
+
+import {userRegister} from '../actions/userAction';
+
+class CreateUser extends Component {
   constructor(props) {
     super(props);
 
@@ -41,42 +45,38 @@ export default class CreateUser extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const user = {
+    const newUser = {
       username: this.state.username,
       password: this.state.password,
       email: this.state.email
     }
 
-    console.log(user);
     //reference for this to work in axios
     var self = this;
 
     // sending a HTTP POST request to the URL end point
     // which is expecting a JSON object, that we put in as a second argument
-    axios.post('/users/add', user)
+    axios.post('/users/add', newUser)
       .then(function(res){
         if(typeof(res.data.msg) === 'undefined'){
-          self.setState({
-              username: '',
-              password: '',
-              email: '',
-              msg: ''
-            });
 
-          window.location = '/';
+          const user = {
+            token: res.data.token,
+            id: res.data.user.id,
+            username: res.data.user.username,
+            email: res.data.user.email
+          }
+
+          console.log("create-user-comp, line 77, res.data");
+          console.log(res.data);
+          self.props.userRegister(user);
+
+          self.props.history.push('/dashboard');
+        }else{
+          self.setState({msg: res.data.msg});
         }
-        self.setState({msg: res.data.msg});
       });
 
-    // // this is used to reset the username field to blank after submission
-    // this.setState({
-    //   username: '',
-    //   password: '',
-    //   email: ''
-    // })
-
-    // // redirect after adding auth gate to dashboard
-    // window.location = '/';
   }
 
   render() {
@@ -123,3 +123,20 @@ export default class CreateUser extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => (
+  //this returns an object containing data needed by this connected component
+  // each field in this object will become a prop of this connected component
+    {
+      user: state.user
+    }
+)
+
+const mapDispatchToProps = dispatch => ({
+  userRegister: user => dispatch(userRegister(user))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateUser)

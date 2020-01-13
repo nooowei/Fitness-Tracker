@@ -80,9 +80,6 @@ class UserLogin extends Component {
             email: res.data.user.email
           }
 
-          // console.log("user-auth-comp, line 107, user-param is: ");
-          // console.log(user);
-
           // dispatch the SIGN_IN action
           self.props.userSignIn(user);
 
