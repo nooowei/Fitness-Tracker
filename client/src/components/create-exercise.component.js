@@ -94,7 +94,7 @@ export default class CreateExercise extends Component {
       .then(res => console.log(res.data));
 
     // take the user back to homepage ("/").
-    window.location = '/';
+    this.props.history.push('/dashboard');
   }
 
   render() {
