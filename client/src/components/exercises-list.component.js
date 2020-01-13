@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux'
 
-import {loadUsers} from '../actions/userAction';
+import {loadUsers, loadLogs} from '../actions/userAction';
 
 // this Exercise-component exists within the exercises-list-component
 // this is an Functional React Component, it doesn't have state, and lifecycle methods.
 // used for accepting props, and returning JSX
 // const Exercise = props => (
   function Exercise(props){
+    console.log("Exercise View Component print: ");
+    console.log(props.exercise);
     return(
       <tr>
         <td>{props.exercise.username}</td>
@@ -32,38 +35,59 @@ class ExercisesList extends Component {
 
     this.deleteExercise = this.deleteExercise.bind(this)
 
-    this.state = {exercises: []};
+    // this.state = {exercises: []};
   }
+
+  // // origional: set local state
+  // componentDidMount() {
+  //   axios.get('/exercises')
+  //     .then(response => {
+  //       this.setState({ exercises: response.data })
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     })
+  // }
 
   componentDidMount() {
     axios.get('/exercises')
-      .then(response => {
-        this.setState({ exercises: response.data })
+      .then(res => {
+        console.log("ex-list-comp line53: ");
+        console.log(res.data);
+        this.props.loadLogs(res.data);  // sent to global store - works, verified in Redux Dev Tool
       })
       .catch((error) => {
         console.log(error);
       })
+    console.log("ex-list-comp line60 this.props.logs: ")
+    console.log(this.props.logs) // got the 
   }
+
+  
 
   deleteExercise(id) {
     axios.delete('/exercises/'+id)
       .then(response => { console.log(response.data)});
 
-    // after deleting this exercise from the databse,
-    // we also need to delete it from the page
-    this.setState({
-      // only render the item if the element id is not equal to the id deleted
-      exercises: this.state.exercises.filter(el => el._id !== id)
-    })
+    // replace this with rerendering instead of setState
+
+    // // after deleting this exercise from the databse,
+    // // we also need to delete it from the page
+    // this.setState({
+    //   // only render the item if the element id is not equal to the id deleted
+    //   exercises: this.state.exercises.filter(el => el._id !== id)
+    // })
   }
 
   exerciseList() {
     // for every element called currentexercise in the exercises array
     // it will return an Exercise Component
-    return this.state.exercises.map(currentexercise => {
+    console.log("ex-list-comp line 78: ");
+    console.log(this.props.logs)
+    return this.props.logs.map(log => {
       // each component will be a row of a table
       // while calling the Exercise Component, we passed in these 3 keys as "props", which will be used in the Exercise Component
-      return <Exercise exercise={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
+      return <Exercise exercise={log} deleteExercise={this.deleteExercise} key={log._id}/>;
     })
   }
 
@@ -95,19 +119,25 @@ class ExercisesList extends Component {
 // passing global state.users to this class
 // to be used as this.props.users in ExerciseList class
 // ownProps is optional, if we want to pass this component's prop to the state
-const mapStateToProps = (state, ownProps) => (
+// anytime store is updated, mapStateToProps will be called
+const mapStateToProps = (state) => (
   //this returns an object containing data needed by this connected component
   // each field in this object will become a prop of this connected component
-  return({
-    users: state.usersArr
-  })
+    {
+      userArr: state.userArr,
+      logs: state.logs
+    }
 )
 
-//give this class access to actions
-// props
+// give this class access to actions
+// props.loadUsers(users)
+// loadUsers saves userArr to store
+// loadLogs saves logsArr to store
 const mapDispatchToProps = dispatch => ({
-  loadUsers: users => dispatch(loadUsers(users))
+  loadUsers: users => dispatch(loadUsers(users)),
+  loadLogs: logs => dispatch(loadLogs(logs))
 })
+
 
 // mapDispatchToProps can be replaced by imported actions
 export default connect(

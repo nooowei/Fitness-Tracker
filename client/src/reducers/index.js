@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import user from './userReducer'
-import log from './logReducer'
+import logs from './logReducer'
 import userArr from './userArrReducer'
 
 //ES6 syntax, by naming the reducer the same as the content it is managing
@@ -9,5 +9,5 @@ import userArr from './userArrReducer'
 export default combineReducers({
   userArr,
   user,
-  log
+  logs
 });
