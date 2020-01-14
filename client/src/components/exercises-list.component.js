@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux'
 
 import {loadUsers, loadLogs} from '../actions/userAction';
@@ -12,18 +11,15 @@ import {loadUsers, loadLogs} from '../actions/userAction';
 // used for accepting props, and returning JSX
 // const Exercise = props => (
   function Exercise(props){
-    console.log("Exercise View Component print: ");
-    console.log(props.exercise);
+    // console.log("Exercise View Component print: ");
+    // console.log(props.exercise);
     return(
       <tr>
         <td>{props.exercise.username}</td>
         <td>{props.exercise.description}</td>
         <td>{props.exercise.duration}</td>
         <td>{props.exercise.date.substring(0,10)}</td>
-        <td>
-          {/* <Link to={"/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a> */}
-          <Button href={"/edit/"+props.exercise._id}>Edit</Button> | <Button onClick={() => { props.deleteExercise(props.exercise._id) }}>Delete</Button>
-        </td>
+        
       </tr>
     )
   }
@@ -33,61 +29,48 @@ class ExercisesList extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteExercise = this.deleteExercise.bind(this)
-
     // this.state = {exercises: []};
   }
-
-  // // origional: set local state
-  // componentDidMount() {
-  //   axios.get('/exercises')
-  //     .then(response => {
-  //       this.setState({ exercises: response.data })
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     })
-  // }
 
   componentDidMount() {
     axios.get('/exercises')
       .then(res => {
-        console.log("ex-list-comp line53: ");
-        console.log(res.data);
+        // console.log("ex-list-comp line53: ");
+        // console.log(res.data);
         this.props.loadLogs(res.data);  // sent to global store - works, verified in Redux Dev Tool
       })
       .catch((error) => {
         console.log(error);
       })
-    console.log("ex-list-comp line60 this.props.logs: ")
-    console.log(this.props.logs) // got the 
+    // console.log("ex-list-comp line60 this.props.logs: ")
+    // console.log(this.props.logs) // got the 
   }
 
   
 
-  deleteExercise(id) {
-    axios.delete('/exercises/'+id)
-      .then(response => { console.log(response.data)});
+  // deleteExercise(id) {
+  //   axios.delete('/exercises/'+id)
+  //     .then(response => { console.log(response.data)});
 
-    // replace this with rerendering instead of setState
+  //   // replace this with rerendering instead of setState
 
-    // // after deleting this exercise from the databse,
-    // // we also need to delete it from the page
-    // this.setState({
-    //   // only render the item if the element id is not equal to the id deleted
-    //   exercises: this.state.exercises.filter(el => el._id !== id)
-    // })
-  }
+  //   // // after deleting this exercise from the databse,
+  //   // // we also need to delete it from the page
+  //   // this.setState({
+  //   //   // only render the item if the element id is not equal to the id deleted
+  //   //   exercises: this.state.exercises.filter(el => el._id !== id)
+  //   // })
+  // }
 
   exerciseList() {
     // for every element called currentexercise in the exercises array
     // it will return an Exercise Component
-    console.log("ex-list-comp line 78: ");
-    console.log(this.props.logs)
+    // console.log("ex-list-comp line 78: ");
+    // console.log(this.props.logs)
     return this.props.logs.map(log => {
       // each component will be a row of a table
       // while calling the Exercise Component, we passed in these 3 keys as "props", which will be used in the Exercise Component
-      return <Exercise exercise={log} deleteExercise={this.deleteExercise} key={log._id}/>;
+      return <Exercise exercise={log} key={log._id}/>;
     })
   }
 
@@ -95,7 +78,7 @@ class ExercisesList extends Component {
   render() {
     return (
       <div>
-        <h3>Exercise Log</h3>
+        <h3>View All Logs</h3>
         <Table striped bordered hover variant="dark" responsive>
           <thead>
             <tr>
@@ -103,7 +86,7 @@ class ExercisesList extends Component {
               <th>Description</th>
               <th>Duration</th>
               <th>Date</th>
-              <th>Actions</th>
+              {/* <th>Actions</th> */}
             </tr>
           </thead>
           <tbody>

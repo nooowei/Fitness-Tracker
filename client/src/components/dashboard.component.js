@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 import { connect } from 'react-redux'
-import {loadLogs} from '../actions/userAction';
+import {loadLogs, deleteLog} from '../actions/userAction';
 
 // this Exercise-component exists within the exercises-list-component
 // this is an Functional React Component, it doesn't have state, and lifecycle methods.
@@ -20,7 +20,9 @@ import {loadLogs} from '../actions/userAction';
         <td>{props.exercise.date.substring(0,10)}</td>
         <td>
           {/* <Link to={"/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a> */}
-          <Button href={"/edit/"+props.exercise._id}>Edit</Button> | <Button onClick={() => { props.deleteExercise(props.exercise._id) }}>Delete</Button>
+          {/* <Button href={"/edit/"+props.exercise._id}>Edit</Button> | <Button onClick={() => { props.deleteExercise(props.exercise) }}>Delete</Button> */}
+          <Button onClick={() => {props.editExercise(props.exercise)}}>Edit</Button> | <Button onClick={() => { props.deleteExercise(props.exercise) }}>Delete</Button>
+
         </td>
       </tr>
     )
@@ -31,7 +33,8 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteExercise = this.deleteExercise.bind(this)
+    this.deleteExercise = this.deleteExercise.bind(this);
+    this.editExercise = this.editExercise.bind(this);
 
     // this.state = {exercises: []};
     // console.log(props);
@@ -42,7 +45,7 @@ class Dashboard extends Component {
     console.log(this.props.user)
     axios.post('/exercises/user', {username:this.props.user.username})
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.props.loadLogs(res.data);
       })
       .catch((error) => {
@@ -59,16 +62,31 @@ class Dashboard extends Component {
     //     )
   }
 
-  deleteExercise(id) {
-    axios.delete('/exercises/'+id)
-      .then(response => { console.log(response.data)});
+  editExercise(log){
+    this.props.history.push(`/edit/${log._id}`);
+  }
 
+  deleteExercise(log) {
+    axios.delete('/exercises/'+log._id)
+      .then(response => { console.log(response.data)});
+    
+    //update the user data by reloading the user exercises
+    axios.post('/exercises/user', {username:this.props.user.username})
+    .then(res => {
+      // console.log(res.data);
+      this.props.loadLogs(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
     // after deleting this exercise from the databse,
     // we also need to delete it from the page
     this.setState({
       // only render the item if the element id is not equal to the id deleted
-      exercises: this.state.exercises.filter(el => el._id !== id)
+      // exercises: this.state.exercises.filter(el => el._id !== id)
+      exercises: this.props.logs
     })
+
   }
 
   exerciseList() {
@@ -77,7 +95,7 @@ class Dashboard extends Component {
     return this.props.logs.map(currentexercise => {
       // each component will be a row of a table
       // while calling the Exercise Component, we passed in these 3 keys as "props", which will be used in the Exercise Component
-      return <UserLogs exercise={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
+      return <UserLogs exercise={currentexercise} editExercise={this.editExercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
     })
   }
 
@@ -85,7 +103,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-        <h3>Exercise Log</h3>
+        <h3>View All Log</h3>
         <Table striped bordered hover variant="dark" responsive>
           <thead>
             <tr>
@@ -115,7 +133,8 @@ const mapStateToProps = (state) => (
 )
 
 const mapDispatchToProps = dispatch => ({
-  loadLogs: logs => dispatch(loadLogs(logs))
+  loadLogs: logs => dispatch(loadLogs(logs)),
+  deleteLog: log => dispatch(deleteLog(log))
 })
 
 // mapDispatchToProps can be replaced by imported actions

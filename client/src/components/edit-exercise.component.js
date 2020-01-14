@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { connect } from 'react-redux';
+import {loadLogs} from '../actions/userAction';
 
-export default class EditExercise extends Component {
+class EditExercise extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+    // this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -37,25 +39,25 @@ export default class EditExercise extends Component {
         console.log(error);
       })
 
-    axios.get('/users')
-      .then(response => {
-        if (response.data.length > 0) {
-          this.setState({
-            users: response.data.map(user => user.username),
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // axios.get('/users')
+    //   .then(response => {
+    //     if (response.data.length > 0) {
+    //       this.setState({
+    //         users: response.data.map(user => user.username),
+    //       })
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
 
   }
 
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    })
-  }
+  // onChangeUsername(e) {
+  //   this.setState({
+  //     username: e.target.value
+  //   })
+  // }
 
   onChangeDescription(e) {
     this.setState({
@@ -79,7 +81,7 @@ export default class EditExercise extends Component {
     e.preventDefault();
 
     const exercise = {
-      username: this.state.username,
+      username: this.props.user.username,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
@@ -87,10 +89,22 @@ export default class EditExercise extends Component {
 
     console.log(exercise);
 
+    //update the user data by reloading the user exercises
+    axios.post('/exercises/user', {username:this.props.user.username})
+    .then(res => {
+      // console.log(res.data);
+      this.props.loadLogs(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
     axios.post('http://localhost:5000/exercises/update/' + this.props.match.params.id, exercise)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+    
+
+    this.props.history.push('/dashboard');
   }
 
   render() {
@@ -100,20 +114,8 @@ export default class EditExercise extends Component {
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <label>Username: </label>
-          <select ref="userInput"
-              required
-              className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}>
-              {
-                this.state.users.map(function(user) {
-                  return <option
-                    key={user}
-                    value={user}>{user}
-                    </option>;
-                })
-              }
-          </select>
+          <br></br>
+          <h5>User: {this.props.user.username}</h5>
         </div>
         <div className="form-group">
           <label>Description: </label>
@@ -151,3 +153,21 @@ export default class EditExercise extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => (
+  //this returns an object containing data needed by this connected component
+  // each field in this object will become a prop of this connected component
+    {
+      user: state.user
+    }
+)
+
+const mapDispatchToProps = dispatch => ({
+  loadLogs: logs => dispatch(loadLogs(logs))
+})
+
+// mapDispatchToProps can be replaced by imported actions
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditExercise)

@@ -29,6 +29,9 @@ const logs = (state = initialLog, action) => {
           }
       ]
       
+    case "DELETE_LOG":
+      let newState = state.filter(log => log.description !== action.description);
+      return newState;
 
     case "LOAD_LOGS":
       return action.logs;

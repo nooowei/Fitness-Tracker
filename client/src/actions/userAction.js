@@ -3,9 +3,8 @@ export const userSignIn = user => ({
   user
 })
 
-export const userSignOut = user => ({
-  type: 'SIGN_OUT',
-  user
+export const userSignOut = () => ({
+  type: 'SIGN_OUT'
 })
 
 export const userRegister = user => ({
@@ -30,5 +29,10 @@ export const createLog = log => ({
 
 export const editLog = log => ({
   type: 'EDIT_LOG',
+  log
+})
+
+export const deleteLog = log => ({
+  type: 'DELETE_LOG',
   log
 })
