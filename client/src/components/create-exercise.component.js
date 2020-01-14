@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-// axios is used to send HTTP request
+import { connect } from 'react-redux'
 
-export default class CreateExercise extends Component {
+class CreateExercise extends Component {
   // in JS, we always need to call super() when defining the constructor of a subclass
   constructor(props) {
     super(props);
 
     // these lines are binding the keyword "this" to these methods
     // so "this" will refer to the right thing
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+    // this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -30,31 +30,26 @@ export default class CreateExercise extends Component {
 
   // this is a React lifecycle method, will automatically be called by React
   // called right before anything is displayed on the page.
-  componentDidMount() {
-    axios.get('/users')
-      .then(response => {
-        //checking there is at least 1 user in database
-        if (response.data.length > 0) {
-          this.setState({
-            // data will be an array, for each user we will return their username
-            users: response.data.map(user => user.username),
-            username: response.data[0].username
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+  // componentDidMount() {
+    // axios.get('/users')
+    //   .then(response => {
+    //     //checking there is at least 1 user in database
+    //     if (response.data.length > 0) {
+    //       this.setState({
+    //         // data will be an array, for each user we will return their username
+    //         users: response.data.map(user => user.username),
+    //         username: response.data[0].username
+    //       })
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+  //   })
 
-  }
+  // }
 
   // Event handler function that calls on "setState()" method to change the state
   // functions are called from the page,  e.target is the text box, value is the innerHTML
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    })
-  }
 
   onChangeDescription(e) {
     this.setState({
@@ -82,19 +77,20 @@ export default class CreateExercise extends Component {
     // we can use the conventional way to create variables in methods
     // if the variable will only be used within the method
     const exercise = {
-      username: this.state.username,
+      username: this.props.user.username,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
     }
 
+    console.log("just added this exercise: ");
     console.log(exercise);
 
     axios.post('/exercises/add', exercise)
       .then(res => console.log(res.data));
 
     // take the user back to homepage ("/").
-    window.location = '/';
+    this.props.history.push('/dashboard');
   }
 
   render() {
@@ -104,7 +100,9 @@ export default class CreateExercise extends Component {
       {/* set Event handler function */}
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label>Username: </label>
+          <br></br>
+          <h5>User: {this.props.user.username}</h5>
+          {/* <label>Username: </label>
           <select ref="userInput"
               required
               className="form-control"
@@ -118,7 +116,7 @@ export default class CreateExercise extends Component {
                     </option>;
                 })
               }
-          </select>
+          </select> */}
         </div>
         <div className="form-group">
           <label>Description: </label>
@@ -156,3 +154,16 @@ export default class CreateExercise extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => (
+  //this returns an object containing data needed by this connected component
+  // each field in this object will become a prop of this connected component
+    {
+      user: state.user
+    }
+)
+
+// mapDispatchToProps can be replaced by imported actions
+export default connect(
+  mapStateToProps
+)(CreateExercise)
