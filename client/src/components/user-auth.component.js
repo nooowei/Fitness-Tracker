@@ -27,7 +27,7 @@ class UserLogin extends Component {
     this.state = {
       email: '',
       password: '',
-      msg: ''
+      msg: 'For Demo, Email: tester1@gmail.com   Password:123456'
     }
   }
 
