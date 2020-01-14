@@ -99,7 +99,7 @@ class EditExercise extends Component {
       console.log(error);
     })
 
-    axios.post('http://localhost:5000/exercises/update/' + this.props.match.params.id, exercise)
+    axios.post('/exercises/update/' + this.props.match.params.id, exercise)
       .then(res => console.log(res.data));
 
     
