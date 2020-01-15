@@ -28,25 +28,6 @@ class CreateExercise extends Component {
     }
   }
 
-  // this is a React lifecycle method, will automatically be called by React
-  // called right before anything is displayed on the page.
-  // componentDidMount() {
-    // axios.get('/users')
-    //   .then(response => {
-    //     //checking there is at least 1 user in database
-    //     if (response.data.length > 0) {
-    //       this.setState({
-    //         // data will be an array, for each user we will return their username
-    //         users: response.data.map(user => user.username),
-    //         username: response.data[0].username
-    //       })
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-  //   })
-
-  // }
 
   // Event handler function that calls on "setState()" method to change the state
   // functions are called from the page,  e.target is the text box, value is the innerHTML
@@ -95,31 +76,17 @@ class CreateExercise extends Component {
 
   render() {
     return (
-    <div>
+    <div align="left">
       <h3>Create New Log</h3>
       {/* set Event handler function */}
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <br></br>
           <h5>User: {this.props.user.username}</h5>
-          {/* <label>Username: </label>
-          <select ref="userInput"
-              required
-              className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}>
-              {
-                this.state.users.map(function(user) {
-                  return <option
-                    key={user}
-                    value={user}>{user}
-                    </option>;
-                })
-              }
-          </select> */}
+          
         </div>
         <div className="form-group">
-          <label>Description: </label>
+          <h5>Description: </h5>
           <input  type="text"
               required
               className="form-control"
@@ -128,7 +95,7 @@ class CreateExercise extends Component {
               />
         </div>
         <div className="form-group">
-          <label>Duration (in minutes): </label>
+          <h5>Duration (in minutes): </h5>
           <input
               type="text"
               className="form-control"
@@ -137,7 +104,7 @@ class CreateExercise extends Component {
               />
         </div>
         <div className="form-group">
-          <label>Date: </label>
+          <h5>Date: </h5>
           <div>
             <DatePicker
               selected={this.state.date}

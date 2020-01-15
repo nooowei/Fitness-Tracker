@@ -109,12 +109,12 @@ class UserLogin extends Component {
 
   render() {
     return (
-    <div>
+    <div align="left">
       <h3>Sign In</h3>
       {/* set Event handler function */}
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label>Email: </label>
+          <h5>Email: </h5>
           <input type="email"
               required
               className="form-control"
@@ -124,7 +124,7 @@ class UserLogin extends Component {
             />
         </div>
         <div className="form-group">
-          <label>Password: </label>
+          <h5>Password: </h5>
           <input  type="password"
               required
               className="form-control"
@@ -141,7 +141,7 @@ class UserLogin extends Component {
           {/* {this.renderRedirect()} */}
         </div>
       </form>
-      <p>Don't have an account? Click here to <a href='/user'>Register</a>.</p>
+      <h5>Don't have an account? Click here to <a href='/user'><i><u>Register</u></i></a>.</h5>
     </div>
     )
   }

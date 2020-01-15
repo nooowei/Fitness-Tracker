@@ -81,11 +81,11 @@ class CreateUser extends Component {
 
   render() {
     return (
-      <div>
+      <div align="left">
         <h3>Create New Account</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label>Username: </label>
+            <h5>Username: </h5>
             <input  type="text"
                 required
                 className="form-control"
@@ -94,7 +94,7 @@ class CreateUser extends Component {
                 />
           </div>
           <div className="form-group">
-            <label>Password: </label>
+            <h5>Password: </h5>
             <input  type="password"
                 required
                 className="form-control"
@@ -103,7 +103,7 @@ class CreateUser extends Component {
                 />
           </div>
           <div className="form-group">
-            <label>Email: </label>
+            <h5>Email: </h5>
             <input  type="email"
                 required
                 className="form-control"
@@ -118,7 +118,7 @@ class CreateUser extends Component {
             <input type="submit" value="Create User" className="btn btn-primary" />
           </div>
         </form>
-        <p>Already have an account? Click here to <a href='/login'>Sign In</a>.</p>
+        <h5>Already have an account? Click here to <a href='/login'><i><u>Sign In</u></i></a>.</h5>
       </div>
     )
   }

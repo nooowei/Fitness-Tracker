@@ -13,7 +13,7 @@ import {loadLogs, deleteLog} from '../actions/userAction';
   function UserLogs(props){
     // console.log(props.exercise._id);
     return(
-      <tr>
+      <tr align="left">
         <td>{props.exercise.username}</td>
         <td>{props.exercise.description}</td>
         <td>{props.exercise.duration}</td>
@@ -107,11 +107,11 @@ class Dashboard extends Component {
         <Table striped bordered hover variant="dark" responsive>
           <thead>
             <tr>
-              <th>Username</th>
-              <th>Description</th>
-              <th>Duration</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th><h5>Username</h5></th>
+              <th><h5>Description</h5></th>
+              <th><h5>Duration</h5></th>
+              <th><h5>Date</h5></th>
+              <th><h5>Actions</h5></th>
             </tr>
           </thead>
           <tbody>
